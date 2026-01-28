@@ -23,10 +23,12 @@ export function GameChip({ game, containerId }: GameChipProps) {
       {...listeners}
       {...attributes}
       className={`
-        w-14 h-14 shrink-0 rounded-lg overflow-hidden border-2 border-white/20
+        w-30 h-30 shrink-0 rounded-lg overflow-hidden border-2
         cursor-grab active:cursor-grabbing
-        transition-shadow
-        ${isDragging ? 'opacity-50 shadow-xl z-50' : 'hover:border-white/40'}
+        transition-all duration-200 ease-out
+        ${isDragging
+          ? 'opacity-70 shadow-2xl z-50 scale-105 border-amber-400/80'
+          : 'border-white/25 hover:scale-110 hover:shadow-xl hover:border-white/60 hover:z-10'}
       `}
       title={game.name}
     >

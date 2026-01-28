@@ -98,26 +98,49 @@ function App() {
 
   const activeGame = activeId ? gamesById[activeId] : null
 
+  const handleExport = useCallback(() => {
+    const state = {
+      tiers: tiers.map((t) => ({
+        id: t.id,
+        label: t.label,
+        color: t.color,
+        gameIds: t.gameIds,
+        count: t.gameIds.length,
+      })),
+      pool: { count: poolIds.length, gameIds: poolIds },
+    }
+    console.log('Tier Maker state:', state)
+  }, [tiers, poolIds])
+
   return (
     <div className="min-h-screen bg-gray-900 text-white p-6">
       <div className="max-w-6xl mx-auto space-y-6">
         <header className="flex items-center justify-between gap-4 flex-wrap">
           <h1 className="text-2xl font-bold">Board Game Tier Maker</h1>
-          <div className="flex items-center gap-2 text-sm">
-            <label htmlFor="keep-max" className="text-white/80">
-              Keep tier max:
-            </label>
-            <input
-              id="keep-max"
-              type="number"
-              min={1}
-              max={200}
-              value={keepTierMax}
-              onChange={(e) =>
-                setKeepTierMax(Math.max(1, Math.min(200, Number(e.target.value) || 1)))
-              }
-              className="w-16 rounded bg-white/10 border border-white/20 px-2 py-1 text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
-            />
+          <div className="flex items-center gap-4 flex-wrap">
+            <div className="flex items-center gap-2 text-sm">
+              <label htmlFor="keep-max" className="text-white/80">
+                Keep tier max:
+              </label>
+              <input
+                id="keep-max"
+                type="number"
+                min={1}
+                max={200}
+                value={keepTierMax}
+                onChange={(e) =>
+                  setKeepTierMax(Math.max(1, Math.min(200, Number(e.target.value) || 1)))
+                }
+                className="w-16 rounded bg-white/10 border border-white/20 px-2 py-1 text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
+              />
+            </div>
+            <button
+              type="button"
+              onClick={handleExport}
+              className="rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-gray-900 shadow-md transition-all duration-200 hover:bg-amber-400 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+            >
+              Export
+            </button>
           </div>
         </header>
 

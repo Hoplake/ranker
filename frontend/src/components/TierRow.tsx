@@ -44,10 +44,10 @@ export function TierRow({ tier, gamesById, isOver, onLabelChange }: TierRowProps
     .filter(Boolean) as Game[]
 
   return (
-    <div className="flex items-stretch gap-0 rounded-lg overflow-hidden border-2 border-white/10">
-      {/* Tier label - editable */}
+    <div className="flex items-stretch gap-0 rounded-lg overflow-hidden border-2 border-gray-700 shadow-lg">
+      {/* Bright tier label - classic TierMaker left block */}
       <div
-        className="w-24 shrink-0 flex items-center justify-center px-2 py-2 font-bold text-sm text-white/95 border-r-2 border-white/10"
+        className="w-28 shrink-0 flex items-center justify-center px-3 py-3 font-bold text-base text-white drop-shadow-md"
         style={{ backgroundColor: tier.color }}
       >
         {isEditing ? (
@@ -64,27 +64,27 @@ export function TierRow({ tier, gamesById, isOver, onLabelChange }: TierRowProps
                 setIsEditing(false)
               }
             }}
-            className="w-full bg-white/20 text-white placeholder-white/60 rounded px-1 py-0.5 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-white"
+            className="w-full bg-white/25 text-white placeholder-white/70 rounded px-1.5 py-0.5 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-white"
             placeholder="Tier name"
           />
         ) : (
           <button
             type="button"
             onClick={() => setIsEditing(true)}
-            className="w-full text-left truncate hover:bg-white/10 rounded px-1 py-0.5 transition-colors"
+            className="w-full text-left truncate hover:brightness-110 rounded px-1 py-0.5 transition-all duration-150"
             title="Click to edit"
           >
             {tier.label}
           </button>
         )}
       </div>
-      {/* Drop zone */}
+      {/* Dark gray drop zone - classic TierMaker right area */}
       <div
         ref={setDroppableRef}
         className={`
-          min-h-[4rem] flex-1 flex flex-wrap items-center gap-2 p-2
-          transition-colors
-          ${activeOver ? 'bg-white/15' : 'bg-white/5'}
+          min-h-[4.5rem] flex-1 flex flex-wrap items-center gap-2 p-3
+          transition-colors duration-200
+          ${activeOver ? 'bg-gray-600' : 'bg-gray-800'}
         `}
       >
         {games.map((game) => (

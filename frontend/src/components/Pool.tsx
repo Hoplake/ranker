@@ -20,16 +20,21 @@ export function Pool({ games, isOver }: PoolProps) {
     <div
       ref={setNodeRef}
       className={`
-        rounded-xl border-2 border-dashed p-4
-        min-h-[6rem] flex flex-wrap items-center gap-2
-        transition-colors
-        ${activeOver ? 'border-amber-400/60 bg-amber-500/10' : 'border-white/20 bg-white/5'}
+        rounded-xl border-2 border-dashed p-4 min-h-[6rem]
+        transition-colors duration-200
+        ${activeOver ? 'border-amber-400/60 bg-amber-500/10' : 'border-white/20 bg-gray-900'}
       `}
     >
-      <div className="w-full text-xs font-medium text-white/60 mb-1">Pool — drag games here or to tiers</div>
-      {games.map((game) => (
-        <GameChip key={game.id} game={game} containerId={POOL_ID} />
-      ))}
+      <div className="text-xs font-medium text-white/50 mb-3 px-0.5">
+        Pool — drag games here or to tiers
+      </div>
+      <div className="columns-3 sm:columns-4 md:columns-5 lg:columns-6 gap-3 space-y-3">
+        {games.map((game) => (
+          <div key={game.id} className="break-inside-avoid mb-2">
+            <GameChip game={game} containerId={POOL_ID} />
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
