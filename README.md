@@ -35,3 +35,34 @@ npm run dev
 ```
 
 Images in `frontend/public/games/` are served at `/games/` (e.g. `/games/catan.jpg`).
+
+## Deploy frontend to Cloudflare Pages
+
+### Option A: Dashboard (Git integration)
+
+1. In [Cloudflare Dashboard](https://dash.cloudflare.com) → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**.
+2. Select the repo and configure:
+   - **Production branch:** `main` (or your default)
+   - **Build command:** `npm run build`
+   - **Build output directory:** `dist`
+   - **Root directory:** `frontend` (because this repo is a monorepo)
+3. **Environment variables:** Add any needed under **Settings** → **Environment variables** (e.g. for future API keys).
+4. Save and deploy. Cloudflare will run `npm install` and `npm run build` inside `frontend`, then serve `frontend/dist`.
+
+### Option B: Wrangler CLI (direct upload)
+
+From the repo root:
+
+```bash
+cd frontend
+npm install
+npm run build
+npx wrangler pages deploy dist --project-name=ranker
+```
+
+Create the project once in the dashboard (**Workers & Pages** → **Create** → **Pages** → **Upload assets**) and name it `ranker`, or use `npx wrangler pages project create ranker` first.
+
+### Notes
+
+- **Node version:** Cloudflare Pages uses a recent Node LTS. To pin a version, add an `.nvmrc` (e.g. `20`) in `frontend/` or set **NODE_VERSION** in the build environment.
+- **SPA routing:** `frontend/public/_redirects` is copied into `dist` and sends all routes to `index.html` so client-side routing works if you add it later.
