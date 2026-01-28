@@ -6,9 +6,11 @@ import type { Game } from '../types'
 interface PoolProps {
   games: Game[]
   isOver?: boolean
+  /** Override the label above the pool (default: "Pool — drag games here or to tiers") */
+  poolLabel?: string
 }
 
-export function Pool({ games, isOver }: PoolProps) {
+export function Pool({ games, isOver, poolLabel = 'Pool — drag games here or to tiers' }: PoolProps) {
   const { setNodeRef, isOver: isOverDroppable } = useDroppable({
     id: POOL_ID,
     data: { containerId: POOL_ID },
@@ -26,7 +28,7 @@ export function Pool({ games, isOver }: PoolProps) {
       `}
     >
       <div className="text-xs font-medium text-white/50 mb-3 px-0.5">
-        Pool — drag games here or to tiers
+        {poolLabel}
       </div>
       <div className="columns-3 sm:columns-4 md:columns-5 lg:columns-6 gap-3 space-y-3">
         {games.map((game) => (
