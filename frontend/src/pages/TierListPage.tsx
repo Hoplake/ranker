@@ -8,12 +8,25 @@ import { GameChip } from '../components/GameChip'
 import { POOL_ID } from '../types'
 import type { Game, Tier } from '../types'
 
+/** Colors assigned by tier order (first tier = first color, etc.) */
+const TIER_COLORS = [
+  '#eab308', // S - gold
+  '#22c55e', // A - green
+  '#3b82f6', // B - blue
+  '#f97316', // C - orange
+  '#ef4444', // D - red
+  '#a855f7', // E - purple
+  '#64748b', // F - slate
+]
+
 const DEFAULT_TIERS: Omit<Tier, 'gameIds'>[] = [
-  { id: 'tier-s', label: 'S', color: '#eab308' },
-  { id: 'tier-a', label: 'A', color: '#22c55e' },
-  { id: 'tier-b', label: 'B', color: '#3b82f6' },
-  { id: 'tier-c', label: 'C', color: '#f97316' },
-  { id: 'tier-d', label: 'D', color: '#ef4444' },
+  { id: 'tier-s', label: 'S', color: TIER_COLORS[0]! },
+  { id: 'tier-a', label: 'A', color: TIER_COLORS[1]! },
+  { id: 'tier-b', label: 'B', color: TIER_COLORS[2]! },
+  { id: 'tier-c', label: 'C', color: TIER_COLORS[3]! },
+  { id: 'tier-d', label: 'D', color: TIER_COLORS[4]! },
+  { id: 'tier-e', label: 'E', color: TIER_COLORS[5]! },
+  { id: 'tier-f', label: 'F', color: TIER_COLORS[6]! },
 ]
 
 export function TierListPage() {
@@ -36,6 +49,17 @@ export function TierListPage() {
       prev.map((t) => (t.id === tierId ? { ...t, label } : t))
     )
   }, [])
+
+  const handleDeleteTier = useCallback((tierId: string) => {
+    const tier = tiers.find((t) => t.id === tierId)
+    if (!tier || tiers.length <= 1) return
+    setPoolIds((prev) => [...prev, ...tier.gameIds])
+    setTiers((prev) =>
+      prev
+        .filter((t) => t.id !== tierId)
+        .map((t, i) => ({ ...t, color: TIER_COLORS[i] ?? TIER_COLORS[0]! }))
+    )
+  }, [tiers])
 
   const handleDragStart = useCallback((event: DragStartEvent) => {
     setActiveId(String(event.active.id))
@@ -98,7 +122,7 @@ export function TierListPage() {
   return (
     <div className="space-y-6">
       <header className="flex items-center justify-between gap-4 flex-wrap">
-        <h1 className="text-2xl font-bold">Tier list — S / A / B / C / D</h1>
+        <h1 className="text-2xl font-bold">Tier list — S / A / B / C / D / E / F</h1>
         <button
           type="button"
           onClick={handleExport}
@@ -118,6 +142,8 @@ export function TierListPage() {
                 tier={tier}
                 gamesById={gamesById}
                 onLabelChange={handleLabelChange}
+                onDelete={handleDeleteTier}
+                canDelete={tiers.length > 1}
               />
             ))}
           </div>
